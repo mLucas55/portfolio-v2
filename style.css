@@ -239,4 +239,11 @@ html:has(.graffiti-gallery) {
   .gallery {
     align-items: center;
   }
+
+  .gallery__caption {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-bottom: 4px;
+  }
 }
