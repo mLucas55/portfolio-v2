@@ -1,0 +1,242 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+/* ── Tokens ───────────────────────────────────────────── */
+
+:root {
+  --cream:  #f5f1eb;
+  --stone:  #c9bfaf;
+  --ink:    #1c1a17;
+  --muted:  #7a7265;
+  --accent: #e48b15;
+
+  --serif: 'Playfair Display';
+  --sans:  sans-serif;
+
+  --gap: clamp(1rem, 3vw, 2.5rem);
+  --header-h: clamp(4rem, 3rem + 3vw, 5.5rem);
+
+  /* Gallery image height variants */
+  --img-sm:  60vh;
+  --img-md:  66vh;
+  --img-lg:  72vh;
+  --img-xl:  78vh;
+  --img-xxl: 84vh;
+}
+
+@supports (height: 1svh) {
+  :root {
+    --img-sm:  60svh;
+    --img-md:  66svh;
+    --img-lg:  72svh;
+    --img-xl:  78svh;
+    --img-xxl: 84svh;
+  }
+
+  @media (max-width: 768px) {
+    :root {
+      --img-sm:  40svh;
+      --img-md:  45svh;
+      --img-lg:  50svh;
+      --img-xl:  55svh;
+      --img-xxl: 60svh;
+    }
+  }
+
+  @media (max-width: 480px) {
+    :root {
+      --img-sm:  35svh;
+      --img-md:  40svh;
+      --img-lg:  45svh;
+      --img-xl:  50svh;
+      --img-xxl: 55svh;
+    }
+  }
+}
+
+/* ── Reset ────────────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--serif);
+  overflow: hidden;
+}
+
+/* ── Site Header ──────────────────────────────────────── */
+
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: clamp(0.75rem, 0.317rem + 1.44vw, 1.4rem) clamp(1rem, 0.333rem + 2.22vw, 2rem);
+  background: var(--cream);
+}
+
+.site-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.site-nav__link {
+  text-decoration: none;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(1.1rem, 0.667rem + 1.44vw, 1.75rem);
+  color: var(--ink);
+  letter-spacing: 0.01em;
+}
+
+.site-nav__link:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 5px;
+}
+
+.site-nav__link em {
+  font-style: italic;
+}
+
+/* ── Gallery (horizontal scroll strip) ────────────────── */
+
+.gallery {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--gap);
+  padding: var(--header-h) clamp(1rem, 0.333rem + 2.22vw, 2rem) 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  touch-action: pan-x;
+  scrollbar-width: none;
+  cursor: grab;
+}
+
+.gallery::-webkit-scrollbar {
+  display: none;
+}
+
+.gallery.is-dragging {
+  cursor: grabbing;
+}
+
+/* ── Gallery link wrapper ────────────────────────────── */
+
+.gallery > a {
+  display: block;
+  flex-shrink: 0;
+  text-decoration: none;
+  color: inherit;
+}
+
+.gallery > a:hover .gallery__caption {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+
+/* ── Gallery Item (figure wrapper) ────────────────────── */
+
+.gallery__item {
+  position: relative;
+  flex-shrink: 0;
+  opacity: 0;
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+/* ── Gallery Image ────────────────────────────────────── */
+
+.gallery__image {
+  height: var(--img-lg);
+  width: auto;
+  display: block;
+  object-fit: cover;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Size variants */
+.gallery__item--sm  .gallery__image { height: var(--img-sm); }
+.gallery__item--md  .gallery__image { height: var(--img-md); }
+.gallery__item--lg  .gallery__image { height: var(--img-lg); }
+.gallery__item--xl  .gallery__image { height: var(--img-xl); }
+.gallery__item--xxl .gallery__image { height: var(--img-xxl); }
+
+/* ── Gallery Caption ──────────────────────────────────── */
+
+.gallery__caption {
+  margin-top: 0.75rem;
+  font-family: var(--sans);
+  font-weight: 400;
+  font-size: clamp(0.8rem, 0.727rem + 0.36vw, 1rem);
+  color: var(--ink);
+  letter-spacing: 0.04em;
+  text-align: left;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── GraffitiGallery (vertical, dual column scroll strip) ────────────────── */
+
+/* Allow the page to scroll vertically when the graffiti gallery is present */
+body:has(.graffiti-gallery),
+html:has(.graffiti-gallery) {
+  overflow: visible;
+  height: auto;
+}
+
+.graffiti-gallery {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--gap);
+  padding: var(--header-h)
+           clamp(1rem, 0.333rem + 2.22vw, 2rem)
+           clamp(1rem, 3vw, 2.5rem);
+  width: 100%;
+}
+
+/* Images fill column width, height is driven by aspect ratio */
+.graffiti-gallery .gallery__item {
+  width: 100%;
+  opacity: 0;
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+.graffiti-gallery .gallery__image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+/* ── Responsive: Tablet ───────────────────────────────── */
+
+@media (max-width: 768px) {
+  .gallery {
+    align-items: center;
+  }
+}
